@@ -1,36 +1,43 @@
 import classes from "./AvailableMeals.module.css";
 import Card from "../../UI/Card";
 import MealItem from "./MealItem/MealItem";
-
-const DUMMY_MEALS = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
+import { useEffect, useState } from "react";
+import useHttpRequest from "../../custom hooks/useRequest";
 
 const AvailableMeals = (props) => {
-  const meals = DUMMY_MEALS.map((meal) => (
+  const [movies, setMovies] = useState([]);
+
+  const { isLoading, dataSent, sendRequest, error } = useHttpRequest();
+
+  const applyRequestedData = (data) => {
+    const { menu } = data;
+    const meals = [];
+
+    for (let key in menu) {
+      meals.push({
+        id: key,
+        name: menu[key].name,
+        description: menu[key].description,
+        price: menu[key].price,
+      });
+    }
+    setMovies(meals);
+  };
+
+  const bringMenu = async () => {
+    sendRequest(
+      {
+        url: "https://food-react-47e6c-default-rtdb.firebaseio.com/.json",
+      },
+      applyRequestedData
+    );
+  };
+
+  useEffect(() => {
+    bringMenu();
+  }, []);
+
+  const meals = movies.map((meal) => (
     <MealItem
       id={meal.id}
       key={meal.id}
@@ -39,11 +46,20 @@ const AvailableMeals = (props) => {
       price={meal.price}
     />
   ));
+
+  let content;
+
+  if (isLoading) {
+    content = <p className={classes.error}>Loading ...</p>;
+  } else if (error) {
+    content = <p className={classes.error}>{error}</p>;
+  } else {
+    content = <ul>{meals}</ul>;
+  }
+
   return (
     <section className={classes.meals}>
-      <Card>
-        <ul>{meals}</ul>
-      </Card>
+      <Card>{content}</Card>
     </section>
   );
 };
