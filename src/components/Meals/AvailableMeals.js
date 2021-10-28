@@ -7,7 +7,7 @@ import useHttpRequest from "../../custom hooks/useRequest";
 const AvailableMeals = (props) => {
   const [movies, setMovies] = useState([]);
 
-  const { isLoading, dataSent, sendRequest, error } = useHttpRequest();
+  const { isLoading, sendRequest, error } = useHttpRequest();
 
   const applyRequestedData = (data) => {
     const { menu } = data;
@@ -24,17 +24,23 @@ const AvailableMeals = (props) => {
     setMovies(meals);
   };
 
-  const bringMenu = async () => {
+  // const bringMenu = async () => {
+  // sendRequest(
+  //   {
+  //     url: "https://food-react-47e6c-default-rtdb.firebaseio.com/.json",
+  //   },
+  //   applyRequestedData
+  // );
+  // };
+
+  useEffect(async () => {
     sendRequest(
       {
         url: "https://food-react-47e6c-default-rtdb.firebaseio.com/.json",
       },
       applyRequestedData
     );
-  };
-
-  useEffect(() => {
-    bringMenu();
+    // bringMenu();
   }, []);
 
   const meals = movies.map((meal) => (

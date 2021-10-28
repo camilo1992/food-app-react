@@ -8,7 +8,6 @@ import useHttpRequest from "../../../custom hooks/useRequest";
 
 const Cart = (props) => {
   const [form, setForm] = useState(false);
-  const [errorSending, setErrorSending] = useState(false);
 
   const { isLoading, dataSent, sendRequest } = useHttpRequest();
 
@@ -105,7 +104,6 @@ const Cart = (props) => {
       {!isLoading && !dataSent && cartModalContent}
       {isLoading && submitingOrder}
       {dataSent && !isLoading && orderSentModal}
-      {!dataSent && isLoading && errorSending && errorContentModal}
     </Modal>
   );
 };
