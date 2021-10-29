@@ -33,6 +33,8 @@ const Cart = (props) => {
       method: "POST",
       body: { user: userData, orderedItem: cartCtx.items },
     });
+
+    cartCtx.clearCart();
   };
 
   const cartItems = cartCtx.items.map((item, i) => (

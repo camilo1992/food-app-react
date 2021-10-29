@@ -1,9 +1,6 @@
 import { useCallback, useState } from "react";
-import { useContext } from "react";
-import CartContext from "../store/store-context";
 
 const useHttpRequest = () => {
-  const cartCtx = useContext(CartContext);
   const [dataSent, setDataSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -33,7 +30,7 @@ const useHttpRequest = () => {
     if (configRequest.method === "POST") {
       console.log("this is a post");
       setDataSent(true);
-      cartCtx.clearCart();
+      console.log("it is working");
     }
   }, []);
 
