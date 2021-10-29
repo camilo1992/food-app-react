@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useContext } from "react";
 import CartContext from "../store/store-context";
 
@@ -8,7 +8,7 @@ const useHttpRequest = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const sendRequest = async (configRequest, applyData = null) => {
+  const sendRequest = useCallback(async (configRequest, applyData = null) => {
     setIsLoading(true);
     try {
       const response = await fetch(configRequest.url, {
@@ -35,7 +35,7 @@ const useHttpRequest = () => {
       setDataSent(true);
       cartCtx.clearCart();
     }
-  };
+  }, []);
 
   return { isLoading, dataSent, sendRequest, error };
 };

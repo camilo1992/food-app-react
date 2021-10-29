@@ -9,21 +9,6 @@ const AvailableMeals = (props) => {
 
   const { isLoading, sendRequest, error } = useHttpRequest();
 
-  const applyRequestedData = (data) => {
-    const { menu } = data;
-    const meals = [];
-
-    for (let key in menu) {
-      meals.push({
-        id: key,
-        name: menu[key].name,
-        description: menu[key].description,
-        price: menu[key].price,
-      });
-    }
-    setMovies(meals);
-  };
-
   // const bringMenu = async () => {
   // sendRequest(
   //   {
@@ -33,7 +18,22 @@ const AvailableMeals = (props) => {
   // );
   // };
 
-  useEffect(async () => {
+  useEffect(() => {
+    const applyRequestedData = (data) => {
+      const { menu } = data;
+      const meals = [];
+
+      for (let key in menu) {
+        meals.push({
+          id: key,
+          name: menu[key].name,
+          description: menu[key].description,
+          price: menu[key].price,
+        });
+      }
+      setMovies(meals);
+    };
+
     sendRequest(
       {
         url: "https://food-react-47e6c-default-rtdb.firebaseio.com/.json",
@@ -41,7 +41,7 @@ const AvailableMeals = (props) => {
       applyRequestedData
     );
     // bringMenu();
-  }, []);
+  }, [sendRequest]);
 
   const meals = movies.map((meal) => (
     <MealItem

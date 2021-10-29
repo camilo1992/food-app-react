@@ -104,6 +104,7 @@ const Cart = (props) => {
       {!isLoading && !dataSent && cartModalContent}
       {isLoading && submitingOrder}
       {dataSent && !isLoading && orderSentModal}
+      {dataSent && isLoading && errorContentModal}
     </Modal>
   );
 };
